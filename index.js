@@ -4,7 +4,17 @@ import dotenv from "dotenv";
 import pkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 const { PrismaClient } = pkg;
+
+
 dotenv.config();
+
+console.log("ENV CHECK:");
+console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
+
+if (process.env.DATABASE_URL) {
+  const masked = process.env.DATABASE_URL.replace(/:[^:@]+@/, ":****@");
+  console.log("DATABASE_URL (masked):", masked);
+}
 
 const app = express();
 const adapter = new PrismaPg({
