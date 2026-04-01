@@ -65,7 +65,7 @@ app.get("/leaderboard", async (req, res) => {
 
     res.json(scores);
   } catch (err) {
-    console.error(err);
+    console.error("LEADERBOARD ERROR:", err.message, err.code);
     res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 });
