@@ -19,6 +19,9 @@ if (process.env.DATABASE_URL) {
 const app = express();
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 app.use(cors());
