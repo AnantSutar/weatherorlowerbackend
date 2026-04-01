@@ -3,20 +3,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import pkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-const { PrismaClient } = pkg;
+import dns from "dns";
 
+dns.setDefaultResultOrder("ipv4first"); 
+
+const { PrismaClient } = pkg;
 
 dotenv.config();
 
-console.log("ENV CHECK:");
-console.log("DATABASE_URL exists:", !!process.env.DATABASE_URL);
-
-if (process.env.DATABASE_URL) {
-  const masked = process.env.DATABASE_URL.replace(/:[^:@]+@/, ":****@");
-  console.log("DATABASE_URL (masked):", masked);
-}
-
 const app = express();
+
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -24,12 +20,13 @@ const adapter = new PrismaPg({
   },
 });
 
-app.use(cors());
-app.use(express.json());
-
 const prisma = new PrismaClient({
   adapter,
 });
+
+app.use(cors());
+app.use(express.json());
+
 
 app.post("/score", async (req, res) => {
   try {
